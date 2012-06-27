@@ -11,14 +11,20 @@
 
 namespace AFM\Kanjidic;
 
+use AFM\Kanjidic\Constant;
+use AFM\Kanjidic\Dictionary\DictionaryInterface;
+
+/**
+ * Kanjidic lookup class
+ *
+ * @author Alberto <alberto@coolmobile.es>
+ */
 class Kanjidic
 {
-	private $source;
-
-	const CODEPOINT_UCS = "ucs";
-	const CODEPOINT_TYPE = "jis208";
-
-	const RADICAL_CLASSICA = "classical";
+	/**
+	 * @var \AFM\Kanjidic\Dictionary\DictionaryInterface
+	 */
+	private $dictionary;
 
 	const CRITERIA_EQUAL = "=";
 	const CRITERIA_GT = ">";
@@ -26,79 +32,74 @@ class Kanjidic
 	const CRITERIA_GTE = ">=";
 	const CRITERIA_LTW = "<=";
 
-	const DICTIONARY_NELSON_C = "nelson_c";
-	const DICTIONARY_NELSON_N = "nelson_n";
-	const DICTIONARY_HALPERN_NJECD = "halpern_njecd";
-	const DICTIONARY_HALPERN_KKLD = "nelson_c";
-	const DICTIONARY_HEISIG = "heisig";
-	const DICTIONARY_GAKKEN = "gakken";
-	const DICTIONARY_ONEILL_NAMES = "oneill_names";
-	const DICTIONARY_ONEILL_KK = "oneill_kk";
-
-	public function __construct($fileSource)
+	public function __construct(DictionaryInterface $dictionary = null)
 	{
-		$this->source = $fileSource;
+		$this->dictionary = $dictionary;
 	}
 
 	public function lookByLiteral($value)
 	{
-
 	}
 
 	public function lookByCodepoint($codePoint, $value)
 	{
-
 	}
 
 	public function lookByRadical($type, $value)
 	{
-
 	}
 
 	public function lookByGrade($grade)
 	{
-
 	}
 
 	public function lookByStrokeCount($criteria = self::CRITERIA_EQUAL,
 		$strokeCount, $strokeCountRight = null)
 	{
-
 	}
 
 	public function lookByFrequency($criteria = self::CRITERIA_EQUAL, $frequency,
 		$frenquencyRight = null)
 	{
-
 	}
 
-	public function lookByJlptIndex($index)
+	public function lookByJlptLevel($level)
 	{
-
 	}
 
 	public function lookByDictionaryIndex($dictionary, $index)
 	{
-
 	}
 
 	public function lookByReading($type, $reading)
 	{
-
 	}
 
 	public function lookByReadings(Array $readings)
 	{
-
 	}
 
 	public function lookByMeaning($language, $meaning)
 	{
-
 	}
 
 	public function lookByMeanings(Array $meanings)
 	{
+	}
 
+	/**
+	 * @param \AFM\Kanjidic\Dictionary\DictionaryInterface $dictionary
+	 */
+	public function setDictionary(DictionaryInterface $dictionary)
+	{
+		$this->dictionary = $dictionary;
+	}
+
+	/**
+	 * @return \AFM\Kanjidic\Dictionary\DictionaryInterface
+	 */
+	public function getDictionary()
+	{
+		return $this->dictionary;
 	}
 }

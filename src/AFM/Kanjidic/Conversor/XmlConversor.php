@@ -13,6 +13,12 @@ namespace AFM\Kanjidic\Conversor;
 
 use AFM\Kanjidic\Dictionary;
 
+/**
+ * Parses and converts Xml kanjidic2 source file
+ * to a valid Dictionary abstraction class
+ *
+ * @author Alberto <alberto@coolmobile.es>
+ */
 class XmlConversor
 {
 	private $file;

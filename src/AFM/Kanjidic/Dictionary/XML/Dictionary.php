@@ -13,17 +13,43 @@ namespace AFM\Kanjidic\Dictionary\XML;
 
 use AFM\Kanjidic\Dictionary\DictionaryInterface;
 use AFM\Kanjidic\Dictionary\XML\Entry;
+use AFM\Kanjidic\Conversor\XmlConversor;
 
+/**
+ * {@inheritDoc}
+ */
 class Dictionary implements DictionaryInterface
 {
+	/**
+	 * @var Entry
+	 */
 	private $entries;
 
 	/**
-	 * Gets a literal entry in the dictionary
+	 * If you pass the kanjidic2 xml source file to this
+	 * constructor, a new dictionary will be converted from it
+	 * and returned instead of an empty object
+	 *
+	 * @param string $file
+	 */
+	public function __construct($file = null)
+	{
+		if(is_null($file))
+			return $this;
+
+		// parse a new dictionary and return it
+		$conversor = new XmlConversor($file);
+		$conversor->parse();
+
+		return $conversor->getDictionary();
+	}
+
+	/**
+	 * Gets a literal entry from the dictionary
 	 *
 	 * @param string $character
 	 *
-	 * @return EntryInterface
+	 * @return Entry
 	 */
 	public function getEntry($literal)
 	{
@@ -31,9 +57,9 @@ class Dictionary implements DictionaryInterface
 	}
 
 	/**
-	 * Returns an array of every entry on the dictionary
+	 * Returns an array of every entry from the dictionary
 	 *
-	 * @return EntryInterface[]
+	 * @return Entry[]
 	 */
 	public function getEntries()
 	{
@@ -42,11 +68,9 @@ class Dictionary implements DictionaryInterface
 
 	public function setEntry($element)
 	{
-		/** @var $entry Entry */
 		$entry = new Entry;
 		$entry->setLiteral($element->literal);
 		$entry->setCodepoints($element->codepoint);
-
 
 		$this->entries[$element->literal] = $entry;
 	}

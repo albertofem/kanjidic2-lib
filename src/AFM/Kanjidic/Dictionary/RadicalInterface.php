@@ -17,14 +17,12 @@ namespace AFM\Kanjidic\Dictionary;
 interface RadicalInterface
 {
 	/**
-	 * @abstract
-	 * @return mixed
+	 * @return string
 	 */
 	public function getType();
 
 	/**
-	 * @abstract
-	 * @return mixed
+	 * @return string
 	 */
 	public function getValue();
 }

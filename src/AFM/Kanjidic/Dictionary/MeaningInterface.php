@@ -19,14 +19,14 @@ interface MeaningInterface
 	/**
 	 * Returns language in ISO 3611-2 format
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getLanguage();
 
 	/**
 	 * Get meaning
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getMeaning();
 }

@@ -20,7 +20,7 @@ interface EntryInterface
 	/**
 	 * Gets kanji literal
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getLiteral();
 
@@ -64,7 +64,7 @@ interface EntryInterface
 	 *
 	 * @return int
 	 */
-	public function getJlptIndex();
+	public function getJlptLevel();
 
 	/**
 	 * Gets dictionary indexes

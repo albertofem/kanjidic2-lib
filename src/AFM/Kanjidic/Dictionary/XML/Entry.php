@@ -14,6 +14,9 @@ namespace AFM\Kanjidic\Dictionary\XML;
 use AFM\Kanjidic\Dictionary\EntryInterface;
 use AFM\Kanjidic\Dictionary\XML\Codepoint;
 
+/**
+ * {@inheritDoc}
+ */
 class Entry implements EntryInterface
 {
 	private $literal;
@@ -22,17 +25,16 @@ class Entry implements EntryInterface
 	private $grade;
 	private $strokeCount;
 	private $frequency;
-	private $jlptIndex;
 	private $dictionaryIndexes;
 	private $readings;
 	private $meanings;
+	private $jlptLevel;
 
 	public function setCodepoints(Array $codepoints)
 	{
 		foreach($codepoints as $codepoint)
 		{
-			$this->codepoints[] = new Codepoint($codepoint->get);
-
+			// $this->codepoints[] = new Codepoint($codepoint->get);
 		}
 
 		$this->codepoints = $codepoints;
@@ -71,16 +73,6 @@ class Entry implements EntryInterface
 	public function getGrade()
 	{
 		return $this->grade;
-	}
-
-	public function setJlptIndex($jlptIndex)
-	{
-		$this->jlptIndex = $jlptIndex;
-	}
-
-	public function getJlptIndex()
-	{
-		return $this->jlptIndex;
 	}
 
 	public function setLiteral($literal)
@@ -131,5 +123,15 @@ class Entry implements EntryInterface
 	public function getStrokeCount()
 	{
 		return $this->strokeCount;
+	}
+
+	public function setJlptLevel($jlptLevel)
+	{
+		$this->jlptLevel = $jlptLevel;
+	}
+
+	public function getJlptLevel()
+	{
+		return $this->jlptLevel;
 	}
 }

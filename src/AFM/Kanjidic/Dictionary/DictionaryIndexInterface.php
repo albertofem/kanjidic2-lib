@@ -17,14 +17,12 @@ namespace AFM\Kanjidic\Dictionary;
 interface DictionaryIndexInterface
 {
 	/**
-	 * @abstract
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName();
 
 	/**
-	 * @abstract
-	 * @return mixed
+	 * @return int
 	 */
 	public function getIndex();
 }

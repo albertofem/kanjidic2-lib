@@ -13,6 +13,9 @@ namespace AFM\Kanjidic\Dictionary\XML;
 
 use AFM\Kanjidic\Dictionary\CodepointInterface;
 
+/**
+ * {@inheritDoc}
+ */
 class Codepoint implements CodepointInterface
 {
 	private $type;
