@@ -18,7 +18,7 @@ use AFM\Kanjidic\Conversor\XmlConversor;
 /**
  * {@inheritDoc}
  */
-class Dictionary implements DictionaryInterface
+class Dictionary implements DictionaryInterface, \Countable
 {
 	/**
 	 * @var Entry
@@ -66,12 +66,16 @@ class Dictionary implements DictionaryInterface
 		return $this->entries;
 	}
 
-	public function setEntry($element)
+	public function setEntry(Entry $entry)
 	{
-		$entry = new Entry;
-		$entry->setLiteral($element->literal);
-		$entry->setCodepoints($element->codepoint);
+		$this->entries[$entry->getLiteral()] = $entry;
+	}
 
-		$this->entries[$element->literal] = $entry;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function count()
+	{
+		return count($this->entries);
 	}
 }

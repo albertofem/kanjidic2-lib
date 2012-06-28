@@ -22,6 +22,9 @@ $loader->register();
 
 use AFM\Kanjidic\Conversor\XmlConversor;
 
-$conversor = new XmlConversor(__DIR__.'/src/AFM/Kanjidic/Resources/kanjidic2/kanjidic2-sample.xml');
+$conversor = new XmlConversor(__DIR__.'/src/AFM/Kanjidic/Resources/kanjidic2/kanjidic2.xml');
 
 $conversor->parse();
+$dictionary = $conversor->getDictionary();
+
+var_dump($dictionary->getEntry('唖'));

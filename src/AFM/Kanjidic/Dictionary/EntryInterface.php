@@ -86,4 +86,11 @@ interface EntryInterface
 	 * @return MeaningInterface
 	 */
 	public function getMeanings();
+
+	/**
+	 * Get nanories
+	 *
+	 * @return Array
+	 */
+	public function getNanories();
 }

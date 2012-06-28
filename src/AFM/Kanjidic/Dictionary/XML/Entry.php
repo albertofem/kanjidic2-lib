@@ -29,14 +29,10 @@ class Entry implements EntryInterface
 	private $readings;
 	private $meanings;
 	private $jlptLevel;
+	private $nanories;
 
 	public function setCodepoints(Array $codepoints)
 	{
-		foreach($codepoints as $codepoint)
-		{
-			// $this->codepoints[] = new Codepoint($codepoint->get);
-		}
-
 		$this->codepoints = $codepoints;
 	}
 
@@ -133,5 +129,15 @@ class Entry implements EntryInterface
 	public function getJlptLevel()
 	{
 		return $this->jlptLevel;
+	}
+
+	public function setNanories($nanories)
+	{
+		$this->nanories = $nanories;
+	}
+
+	public function getNanories()
+	{
+		return $this->nanories;
 	}
 }
