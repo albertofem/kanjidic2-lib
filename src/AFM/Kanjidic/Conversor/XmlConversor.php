@@ -34,24 +34,32 @@ class XmlConversor
 	 */
 	private $simpleXml;
 
-	public function __construct($file)
+	private $debug = false;
+
+	public function __construct($file, $debug = false)
 	{
 		$this->file = $file;
 		$this->dictionary = new XML\Dictionary;
+
+		$this->debug = $debug;
 	}
 
 	public function parse()
 	{
 		// init everythin
+		if($this->debug)
+			echo "Parsing kanjidic2 database...\n";
 
 		$this->simpleXml = new \SimpleXMLElement(file_get_contents($this->file));
-
 		$content = $this->simpleXml->children();
 
 		foreach($content->character as $character)
 		{
 			$this->parseCharacter($character);
 		}
+
+		if($this->debug)
+			echo "\n";
 	}
 
 	public function getDictionary()
@@ -70,7 +78,8 @@ class XmlConversor
 
 	private function buildEntry($character)
 	{
-		echo (string)$character->literal;
+		if($this->debug)
+			echo (string)$character->literal;
 
 		$entry = new XML\Entry;
 		$entry->setLiteral((string)$character->literal);

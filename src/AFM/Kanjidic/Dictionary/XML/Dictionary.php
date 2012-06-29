@@ -53,7 +53,7 @@ class Dictionary implements DictionaryInterface, \Countable
 	 */
 	public function getEntry($literal)
 	{
-		return $this->entries[$literal];
+		return isset($this->entries[$literal]) ? $this->entries[$literal] : null;
 	}
 
 	/**

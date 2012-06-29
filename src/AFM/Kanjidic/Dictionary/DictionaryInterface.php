@@ -15,7 +15,7 @@ namespace AFM\Kanjidic\Dictionary;
  * Your dictionary must implement this interface in
  * order to work with the kanjidic lookup library
  */
-interface DictionaryInterface
+interface DictionaryInterface extends \ArrayAccess, \Iterator, \Countable
 {
 	/**
 	 * Gets a literal entry in the dictionary

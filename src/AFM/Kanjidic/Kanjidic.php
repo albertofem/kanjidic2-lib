@@ -13,6 +13,7 @@ namespace AFM\Kanjidic;
 
 use AFM\Kanjidic\Constant;
 use AFM\Kanjidic\Dictionary\DictionaryInterface;
+use AFM\Kanjidic\Exception;
 
 /**
  * Kanjidic lookup class
@@ -37,8 +38,14 @@ class Kanjidic
 		$this->dictionary = $dictionary;
 	}
 
-	public function lookByLiteral($value)
+	public function lookByLiteral($literal)
 	{
+		$entry = $this->dictionary->getEntry($literal);
+
+		if(is_null($entry))
+			throw new Exception\LiteralNotFoundException;
+
+		return $entry;
 	}
 
 	public function lookByCodepoint($codePoint, $value)

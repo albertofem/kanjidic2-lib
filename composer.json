@@ -14,9 +14,9 @@
 		"php": ">=5.3.0"
 	},
 	"autoload": {
-		"psr-2": {
-			"AFM\\Kanjidic": "src/",
-			"AFM\\Tests": "tests/"
+		"psr-0": {
+			"AFM": "src/",
+			"AFM\\Kanjidic\\Tests": "tests/"
 		}
 	}
 }
