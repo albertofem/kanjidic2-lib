@@ -18,12 +18,22 @@ use AFM\Kanjidic\Conversor\XmlConversor;
 /**
  * {@inheritDoc}
  */
-class Dictionary implements DictionaryInterface, \Countable
+class Dictionary implements DictionaryInterface
 {
 	/**
 	 * @var Entry
 	 */
 	private $entries;
+
+	/**
+	 * @var int
+	 */
+	private $position = 0;
+
+	/**
+	 * @var array
+	 */
+	private $codePointIndex = array();
 
 	/**
 	 * If you pass the kanjidic2 xml source file to this
@@ -71,11 +81,120 @@ class Dictionary implements DictionaryInterface, \Countable
 		$this->entries[$entry->getLiteral()] = $entry;
 	}
 
+	public function getCodepointEntries($codePoint)
+	{
+		if(empty($this->codePointIndex))
+			$this->buildCodepointIndex();
+
+		return $this->codePointIndex[$codePoint];
+	}
+
+	private function buildCodepointIndex()
+	{
+		foreach($this->entries as $entry)
+		{
+			/** @var $entry \AFM\Kanjidic\Dictionary\EntryInterface */
+			foreach($entry->getCodepoints() as $codePoint)
+			{
+				/** @var $codePoint \AFM\Kanjidic\Dictionary\CodepointInterface */
+				if(!isset($this->codePointIndex[$codePoint->getType()]))
+				{
+					$this->codePointIndex[$codePoint->getType()] = array($this->entries[$entry->getLiteral()]);
+				}
+				else
+				{
+					array_push($this->codePointIndex[$codePoint->getType()], $this->entries[$entry->getLiteral()]);
+				}
+			}
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function count()
 	{
 		return count($this->entries);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function current()
+	{
+		$positions = array_keys($this->entries);
+
+		return $this->entries[$positions[$this->position]];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function next()
+	{
+		$this->position++;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function key()
+	{
+		$positions = array_keys($this->entries);
+
+		return $positions[$this->position];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function valid()
+	{
+		$positions = array_keys($this->entries);
+
+		return isset($this->entries[$positions[$this->position]]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function rewind()
+	{
+		$this->position = 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function offsetExists($offset)
+	{
+		return isset($this->entries[$offset]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function offsetGet($offset)
+	{
+		return $this->entries[$offset];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function offsetSet($offset, $value)
+	{
+		if(!$value instanceof Entry)
+			throw new \InvalidArgumentException('Value must be of type AFM\Kanjidic\Dictionary\XML\Entry');
+
+		$this->entries[$offset] = $value;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function offsetUnset($offset)
+	{
+		unset($this->entries[$offset]);
 	}
 }

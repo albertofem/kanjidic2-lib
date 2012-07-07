@@ -14,6 +14,8 @@ namespace AFM\Kanjidic\Tests;
 use AFM\Kanjidic\Kanjidic;
 use AFM\Kanjidic\Conversor\XmlConversor;
 use AFM\Kanjidic\Dictionary;
+use AFM\Kanjidic\Constant\Codepoint;
+use AFM\Kanjidic\Dictionary\EntryInterface;
 
 class KanjidicTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,5 +48,31 @@ class KanjidicTest extends \PHPUnit_Framework_TestCase
 	public function testLookByLiteralNotFound()
 	{
 		self::$kanjidic->lookByLiteral('test');
+	}
+
+	public function testLookByCodepointExistsMultiple()
+	{
+		$result = self::$kanjidic->lookByCodepoint(Codepoint::JIS208);
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(2, $result);
+
+		foreach($result as $entry)
+		{
+			$this->assertTrue($entry instanceof EntryInterface);
+		}
+	}
+
+	public function testLookByCodepointExistsSingle()
+	{
+		$result = self::$kanjidic->lookByCodepoint(Codepoint::UCS);
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(2, $result);
+
+		foreach($result as $entry)
+		{
+			$this->assertTrue($entry instanceof EntryInterface);
+		}
 	}
 }

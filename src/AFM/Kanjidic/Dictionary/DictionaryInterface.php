@@ -32,4 +32,6 @@ interface DictionaryInterface extends \ArrayAccess, \Iterator, \Countable
 	 * @return EntryInterface[]
 	 */
 	public function getEntries();
+
+	public function getCodepointEntries($codePoint);
 }

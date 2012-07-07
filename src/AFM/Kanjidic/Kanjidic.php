@@ -48,8 +48,9 @@ class Kanjidic
 		return $entry;
 	}
 
-	public function lookByCodepoint($codePoint, $value)
+	public function lookByCodepoint($codePoint)
 	{
+		return $this->dictionary->getCodepointEntries($codePoint);
 	}
 
 	public function lookByRadical($type, $value)
