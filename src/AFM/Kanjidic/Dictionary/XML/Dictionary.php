@@ -38,7 +38,7 @@ class Dictionary implements DictionaryInterface
 	/**
 	 * If you pass the kanjidic2 xml source file to this
 	 * constructor, a new dictionary will be converted from it
-	 * and returned instead of an empty object, testdsd
+	 * and returned instead of an empty object, testdsdsd
 	 *
 	 * @param string $file
 	 */
