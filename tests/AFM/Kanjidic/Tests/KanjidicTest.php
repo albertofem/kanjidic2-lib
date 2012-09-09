@@ -27,7 +27,7 @@ class KanjidicTest extends \PHPUnit_Framework_TestCase
 	public static function setUpBeforeClass()
 	{
 		$conversor = new XmlConversor(
-			__DIR__.'/../src/AFM/Kanjidic/Resources/kanjidic2/kanjidic2-sample.xml', true
+			__DIR__.'/../../../../src/AFM/Kanjidic/Resources/kanjidic2/kanjidic2-sample.xml', true
 		);
 
 		$conversor->parse();
