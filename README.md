@@ -28,6 +28,20 @@ You should see a large list of kanjis followed by the total count in the diction
 
     Total dictionary entries: 13108
 
+## Usage
+
+Create new Kanjidic instance:
+
+    <?php
+
+    use AFM\Kanjidic\Kanjidic;
+
+    $kanjidic = new Kanjidic("vendor/kanjidic2/kanjidic2/kanjidic2.xml.gz")
+
+    $kanji = $kanjidic->lookByLiteral("世");
+
+See `Kanjidic` class for more lookup methods
+
 ## License
 
 This library is under the [MIT license](https://github.com/albertofem/kanjidic2-lib/blob/master/LICENSE).
