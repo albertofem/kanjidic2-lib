@@ -11,8 +11,8 @@
 
 namespace AFM\Kanjidic\Tests;
 
+use AFM\Kanjidic\Constant\Radical;
 use AFM\Kanjidic\Kanjidic;
-use AFM\Kanjidic\Conversor\XmlConversor;
 use AFM\Kanjidic\Dictionary;
 use AFM\Kanjidic\Constant\Codepoint;
 use AFM\Kanjidic\Dictionary\EntryInterface;
@@ -26,13 +26,7 @@ class KanjidicTest extends \PHPUnit_Framework_TestCase
 
 	public static function setUpBeforeClass()
 	{
-		$conversor = new XmlConversor(
-			__DIR__.'/../../../../src/AFM/Kanjidic/Resources/kanjidic2/kanjidic2-sample.xml', true
-		);
-
-		$conversor->parse();
-
-		self::$kanjidic = new Kanjidic($conversor->getDictionary());
+		self::$kanjidic = new Kanjidic(__DIR__.'/Resources/kanjidic2-sample.xml');
 	}
 
 	public function testLookByLiteralExists()
@@ -43,7 +37,7 @@ class KanjidicTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException AFM\Kanjidic\Exception\LiteralNotFoundException
+	 * @expectedException \AFM\Kanjidic\Exception\LiteralNotFoundException
 	 */
 	public function testLookByLiteralNotFound()
 	{
@@ -54,25 +48,49 @@ class KanjidicTest extends \PHPUnit_Framework_TestCase
 	{
 		$result = self::$kanjidic->lookByCodepoint(Codepoint::JIS208);
 
-		$this->assertTrue(is_array($result));
-		$this->assertCount(2, $result);
-
-		foreach($result as $entry)
-		{
-			$this->assertTrue($entry instanceof EntryInterface);
-		}
+        $this->assertDicEntries($result, 2);
 	}
 
 	public function testLookByCodepointExistsSingle()
 	{
 		$result = self::$kanjidic->lookByCodepoint(Codepoint::UCS);
 
-		$this->assertTrue(is_array($result));
-		$this->assertCount(2, $result);
-
-		foreach($result as $entry)
-		{
-			$this->assertTrue($entry instanceof EntryInterface);
-		}
+        $this->assertDicEntries($result, 2);
 	}
+
+    public function testLookByRadicalTypeClassical()
+    {
+        $result = self::$kanjidic->lookByRadicalType(Radical::CLASSICAL);
+
+        $this->assertDicEntries($result, 2);
+    }
+
+    public function testLookByRadicalTypeNelsonC()
+    {
+        $result = self::$kanjidic->lookByRadicalType(Radical::NELSON_C);
+
+        $this->assertDicEntries($result, 1);
+    }
+
+    public function testLookByRadical()
+    {
+        $result = self::$kanjidic->lookByRadical(Radical::CLASSICAL, 7);
+
+        $this->assertDicEntries($result, 1);
+
+        $result = self::$kanjidic->lookByRadical(Radical::CLASSICAL, 30);
+
+        $this->assertDicEntries($result, 1);
+    }
+
+    private function assertDicEntries($result, $expectedCount)
+    {
+        $this->assertTrue(is_array($result));
+        $this->assertCount($expectedCount, $result);
+
+        foreach($result as $entry)
+        {
+            $this->assertTrue($entry instanceof EntryInterface);
+        }
+    }
 }

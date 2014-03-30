@@ -14,18 +14,24 @@ namespace AFM\Kanjidic;
 use AFM\Kanjidic\Constant;
 use AFM\Kanjidic\Dictionary\DictionaryInterface;
 use AFM\Kanjidic\Exception;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * Kanjidic lookup class
- *
- * @author Alberto <alberto@coolmobile.es>
- */
 class Kanjidic
 {
 	/**
 	 * @var \AFM\Kanjidic\Dictionary\DictionaryInterface
 	 */
-	private $dictionary;
+	protected $dictionary;
+
+    /**
+     * @var string
+     */
+    protected $file;
+
+    /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
 
 	const CRITERIA_EQUAL = "=";
 	const CRITERIA_GT = ">";
@@ -33,14 +39,31 @@ class Kanjidic
 	const CRITERIA_GTE = ">=";
 	const CRITERIA_LTW = "<=";
 
-	public function __construct(DictionaryInterface $dictionary = null)
+	public function __construct($file, $parse = true)
 	{
-		$this->dictionary = $dictionary;
+        $this->file = $file;
+
+        if($parse)
+		    $this->parseDictionary();
 	}
+
+    public function getDictionary()
+    {
+        if(!$this->dictionary)
+            $this->parseDictionary();
+
+        return $this->dictionary;
+    }
+
+    protected function parseDictionary()
+    {
+        $parser = new Parser($this->file, $this->getEventDispatcher());
+        $this->dictionary = $parser->parse();
+    }
 
 	public function lookByLiteral($literal)
 	{
-		$entry = $this->dictionary->getEntry($literal);
+		$entry = $this->getDictionary()->findByLiteral($literal);
 
 		if(is_null($entry))
 			throw new Exception\LiteralNotFoundException;
@@ -50,12 +73,18 @@ class Kanjidic
 
 	public function lookByCodepoint($codePoint)
 	{
-		return $this->dictionary->getCodepointEntries($codePoint);
+		return $this->getDictionary()->findByCodepoint($codePoint);
 	}
 
-	public function lookByRadical($type, $value)
+	public function lookByRadicalType($type)
 	{
+        return $this->getDictionary()->findByRadicalType($type);
 	}
+
+    public function lookByRadical($type, $radical)
+    {
+        return $this->getDictionary()->findByRadical($type, $radical);
+    }
 
 	public function lookByGrade($grade)
 	{
@@ -95,19 +124,11 @@ class Kanjidic
 	{
 	}
 
-	/**
-	 * @param \AFM\Kanjidic\Dictionary\DictionaryInterface $dictionary
-	 */
-	public function setDictionary(DictionaryInterface $dictionary)
-	{
-		$this->dictionary = $dictionary;
-	}
+    public function getEventDispatcher()
+    {
+        if(!$this->eventDispatcher)
+            $this->eventDispatcher = new EventDispatcher();
 
-	/**
-	 * @return \AFM\Kanjidic\Dictionary\DictionaryInterface
-	 */
-	public function getDictionary()
-	{
-		return $this->dictionary;
-	}
+        return $this->eventDispatcher;
+    }
 }

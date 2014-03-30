@@ -13,7 +13,6 @@ namespace AFM\Kanjidic\Dictionary\XML;
 
 use AFM\Kanjidic\Dictionary\DictionaryInterface;
 use AFM\Kanjidic\Dictionary\XML\Entry;
-use AFM\Kanjidic\Conversor\XmlConversor;
 
 /**
  * {@inheritDoc}
@@ -21,7 +20,7 @@ use AFM\Kanjidic\Conversor\XmlConversor;
 class Dictionary implements DictionaryInterface
 {
 	/**
-	 * @var Entry
+	 * @var Entry[]
 	 */
 	private $entries;
 
@@ -33,35 +32,16 @@ class Dictionary implements DictionaryInterface
 	/**
 	 * @var array
 	 */
-	private $codePointIndex = array();
+	private $indexes = array();
 
-	/**
-	 * If you pass the kanjidic2 xml source file to this
-	 * constructor, a new dictionary will be converted from it
-	 * and returned instead of an empty object
-	 *
-	 * @param string $file
-	 */
-	public function __construct($file = null)
-	{
-		if(is_null($file))
-			return $this;
-
-		// parse a new dictionary and return it
-		$conversor = new XmlConversor($file);
-		$conversor->parse();
-
-		return $conversor->getDictionary();
-	}
-
-	/**
-	 * Gets a literal entry from the dictionary
-	 *
-	 * @param string $character
-	 *
-	 * @return Entry
-	 */
-	public function getEntry($literal)
+    /**
+     * Gets a literal entry from the dictionary
+     *
+     * @param $literal
+     *
+     * @return Entry
+     */
+	public function findByLiteral($literal)
 	{
 		return isset($this->entries[$literal]) ? $this->entries[$literal] : null;
 	}
@@ -71,7 +51,7 @@ class Dictionary implements DictionaryInterface
 	 *
 	 * @return Entry[]
 	 */
-	public function getEntries()
+	public function findAll()
 	{
 		return $this->entries;
 	}
@@ -81,33 +61,96 @@ class Dictionary implements DictionaryInterface
 		$this->entries[$entry->getLiteral()] = $entry;
 	}
 
-	public function getCodepointEntries($codePoint)
+	public function findByCodepoint($codePoint)
 	{
-		if(empty($this->codePointIndex))
-			$this->buildCodepointIndex();
+        $data = $this->getIndexedData("codepointIndex", function()
+        {
+            $index = array();
 
-		return $this->codePointIndex[$codePoint];
+            foreach($this->entries as $entry)
+            {
+                /** @var $entry \AFM\Kanjidic\Dictionary\EntryInterface */
+                foreach($entry->getCodepoints() as $codePoint)
+                {
+                    /** @var $codePoint \AFM\Kanjidic\Dictionary\CodepointInterface */
+                    if(!isset($index[$codePoint->getType()]))
+                    {
+                        $index[$codePoint->getType()] = array($this->entries[$entry->getLiteral()]);
+                    }
+                    else
+                    {
+                        array_push($index[$codePoint->getType()], $this->entries[$entry->getLiteral()]);
+                    }
+                }
+            }
+
+            return $index;
+        });
+
+        return isset($data[$codePoint]) ? $data[$codePoint] : array();
 	}
 
-	private function buildCodepointIndex()
-	{
-		foreach($this->entries as $entry)
-		{
-			/** @var $entry \AFM\Kanjidic\Dictionary\EntryInterface */
-			foreach($entry->getCodepoints() as $codePoint)
-			{
-				/** @var $codePoint \AFM\Kanjidic\Dictionary\CodepointInterface */
-				if(!isset($this->codePointIndex[$codePoint->getType()]))
-				{
-					$this->codePointIndex[$codePoint->getType()] = array($this->entries[$entry->getLiteral()]);
-				}
-				else
-				{
-					array_push($this->codePointIndex[$codePoint->getType()], $this->entries[$entry->getLiteral()]);
-				}
-			}
-		}
-	}
+    public function findByRadicalType($type)
+    {
+        $data = $this->getIndexedData("radicalTypeIndex", function()
+        {
+            $index = array();
+
+            foreach($this->entries as $entry)
+            {
+                /** @var $entry \AFM\Kanjidic\Dictionary\EntryInterface */
+                foreach($entry->getRadicals() as $radical)
+                {
+                    /** @var $radical \AFM\Kanjidic\Dictionary\RadicalInterface */
+                    if(!isset($index[$radical->getType()]))
+                    {
+                        $index[$radical->getType()] = array($this->entries[$entry->getLiteral()]);
+                    }
+                    else
+                    {
+                        array_push($index[$radical->getType()], $this->entries[$entry->getLiteral()]);
+                    }
+                }
+            }
+
+            return $index;
+        });
+
+        return isset($data[$type]) ? $data[$type] : array();
+    }
+
+    public function findByRadical($type, $radicalValue)
+    {
+        $indexName = md5($type.$radicalValue);
+
+        return $this->getIndexedData($indexName, function() use ($type, $radicalValue)
+        {
+            $index = array();
+
+            foreach($this->entries as $entry)
+            {
+                /** @var $entry \AFM\Kanjidic\Dictionary\EntryInterface */
+                foreach($entry->getRadicals() as $radical)
+                {
+                    /** @var $radical \AFM\Kanjidic\Dictionary\RadicalInterface */
+                    if($radical->getType() != $type or $radical->getValue() != $radicalValue)
+                        continue;
+
+                    $index[] = $this->entries[$entry->getLiteral()];
+                }
+            }
+
+            return $index;
+        });
+    }
+
+    private function getIndexedData($index, callable $function)
+    {
+        if(!isset($this->indexes[$index]))
+            $this->indexes[$index] = $function();
+
+        return $this->indexes[$index];
+    }
 
 	/**
 	 * {@inheritDoc}

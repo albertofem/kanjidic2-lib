@@ -17,21 +17,25 @@ namespace AFM\Kanjidic\Dictionary;
  */
 interface DictionaryInterface extends \ArrayAccess, \Iterator, \Countable
 {
-	/**
-	 * Gets a literal entry in the dictionary
-	 *
-	 * @param string $character
-	 *
-	 * @return EntryInterface
-	 */
-	public function getEntry($literal);
+    /**
+     * Returns an array of every entry on the dictionary
+     *
+     * @return EntryInterface[]
+     */
+    public function findAll();
 
-	/**
-	 * Returns an array of every entry on the dictionary
-	 *
-	 * @return EntryInterface[]
-	 */
-	public function getEntries();
+    /**
+     * Gets a literal entry in the dictionary
+     *
+     * @param $literal
+     *
+     * @return EntryInterface
+     */
+	public function findByLiteral($literal);
 
-	public function getCodepointEntries($codePoint);
+	public function findByCodepoint($codePoint);
+
+    public function findByRadicalType($radicalType);
+
+    public function findByRadical($type, $radical);
 }
