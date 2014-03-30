@@ -8,6 +8,22 @@ PHP >= 5.4
 
 ## Installation
 
+In order to use this library on another project, you must add the kanjidic2 dictionary file as a Composer repository:
+
+    "repositories": [
+        {
+            "type":"package",
+            "package": {
+                "name": "kanjidic2/kanjidic2",
+                "version": "1.0",
+                "dist": {
+                    "url": "http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz",
+                    "type": "file"
+                }
+            }
+        }
+    ],
+
 Require this library using composer:
 
 `composer require albertofem/kanjidic`
@@ -18,7 +34,7 @@ Install it:
 
 Test everything is ok:
 
-`php bin/kanjidic kanjidic:dictionary:show vendor/kanjidic2/kanjidic2/kanjidic2.xml.gz`
+`php vendor/albertofem/kanjidic2-lib/bin/kanjidic kanjidic:dictionary:show vendor/kanjidic2/kanjidic2/kanjidic2.xml.gz`
 
 You should see a large list of kanjis followed by the total count in the dictionary:
 
