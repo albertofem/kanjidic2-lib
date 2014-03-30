@@ -2,6 +2,10 @@
 
 [![Build Status](https://secure.travis-ci.org/albertofem/kanjidic2-lib.png)](http://travis-ci.org/albertofem/kanjidic2-lib)
 
+## Requirements
+
+PHP >= 5.4
+
 ## Installation
 
 Require this library using composer:
