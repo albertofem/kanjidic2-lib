@@ -1,6 +1,6 @@
 # README
 
-[![Build Status](https://secure.travis-ci.org/albertofem/kanjidic2-lib.png)](http://travis-ci.org/albertofem/kanjidic2-lib)
+[![Build Status](https://secure.travis-ci.org/albertofem/kanjidic2-lib.png)](http://travis-ci.org/albertofem/kanjidic2-lib) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/albertofem/kanjidic2-lib/badges/quality-score.png?s=c6d93bef66310a21aca3fdcef7835afa3e1100ae)](https://scrutinizer-ci.com/g/albertofem/kanjidic2-lib/)
 
 ## Requirements
 
