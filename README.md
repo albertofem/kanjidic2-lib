@@ -10,19 +10,21 @@ PHP >= 5.3
 
 In order to use this library on another project, you must add the kanjidic2 dictionary file as a Composer repository:
 
-    "repositories": [
-        {
-            "type":"package",
-            "package": {
-                "name": "kanjidic2/kanjidic2",
-                "version": "1.0",
-                "dist": {
-                    "url": "http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz",
-                    "type": "file"
-                }
+```json
+"repositories": [
+    {
+        "type":"package",
+        "package": {
+            "name": "kanjidic2/kanjidic2",
+            "version": "1.0",
+            "dist": {
+                "url": "http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz",
+                "type": "file"
             }
         }
-    ],
+    }
+],
+```
 
 Require this library using composer:
 
@@ -48,13 +50,15 @@ You should see a large list of kanjis followed by the total count in the diction
 
 Create new Kanjidic instance:
 
-    <?php
+```php
+<?php
 
-    use AFM\Kanjidic\Kanjidic;
+use AFM\Kanjidic\Kanjidic;
 
-    $kanjidic = new Kanjidic("vendor/kanjidic2/kanjidic2/kanjidic2.xml.gz")
+$kanjidic = new Kanjidic("vendor/kanjidic2/kanjidic2/kanjidic2.xml.gz")
 
-    $kanji = $kanjidic->lookByLiteral("世");
+$kanji = $kanjidic->lookByLiteral("世");
+```
 
 See `Kanjidic` class for more lookup methods
 
