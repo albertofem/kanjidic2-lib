@@ -28,11 +28,11 @@ In order to use this library on another project, you must add the kanjidic2 dict
 
 Require this library using composer:
 
-`composer require albertofem/kanjidic`
+`composer require albertofem/kanjidic2-lib`
 
 Install it:
 
-`composer update albertofem/kanjidic`
+`composer update albertofem/kanjidic2-lib`
 
 Test everything is ok:
 
