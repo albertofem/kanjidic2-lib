@@ -25,7 +25,7 @@
 	],
 	"require": {
 		"php": ">=5.3.0",
-	        "kanjidic2/kanjidic2":"1.0",
+	        "kanjidic2/kanjidic2":"2.0",
 	        "symfony/event-dispatcher": "~2.4",
 	        "symfony/console": "~2.4"
 	},
