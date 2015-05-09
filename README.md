@@ -16,7 +16,7 @@ In order to use this library on another project, you must add the kanjidic2 dict
         "type":"package",
         "package": {
             "name": "kanjidic2/kanjidic2",
-            "version": "1.0",
+            "version": "2.0",
             "dist": {
                 "url": "http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz",
                 "type": "file"
